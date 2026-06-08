@@ -6,12 +6,10 @@ export async function generateStudySet(notes, title) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ notes, title }),
   });
-
   if (!response.ok) {
     const err = await response.json();
     throw new Error(err.detail || "Backend request failed");
   }
-
   return response.json();
 }
 
