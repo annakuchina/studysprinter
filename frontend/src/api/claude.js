@@ -32,3 +32,11 @@ export async function deleteStudySet(id) {
   if (!response.ok) throw new Error("Failed to delete study set");
   return response.json();
 }
+
+export async function togglePin(id) {
+  const response = await fetch(`${BACKEND_URL}/study-sets/${id}/pin`, {
+    method: "PATCH",
+  });
+  if (!response.ok) throw new Error("Failed to toggle pin");
+  return response.json();
+}

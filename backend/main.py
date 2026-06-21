@@ -126,7 +126,7 @@ Notes:
 
 @app.get("/study-sets")
 def get_study_sets():
-    result = supabase.table("study_sets").select("id, title, summary, created_at").order("created_at", desc=True).execute()
+    result = supabase.table("study_sets").select("id, title, summary, created_at, pinned").order("pinned", desc=True).order("created_at", desc=True).execute()
     return result.data
 
 
@@ -150,3 +150,10 @@ def get_study_set(study_set_id: str):
 def delete_study_set(study_set_id: str):
     supabase.table("study_sets").delete().eq("id", study_set_id).execute()
     return {"status": "deleted"}
+
+@app.patch("/study-sets/{study_set_id}/pin")
+def toggle_pin(study_set_id: str):
+    study_set = supabase.table("study_sets").select("pinned").eq("id", study_set_id).single().execute()
+    new_pinned = not study_set.data["pinned"]
+    supabase.table("study_sets").update({"pinned": new_pinned}).eq("id", study_set_id).execute()
+    return {"pinned": new_pinned}
