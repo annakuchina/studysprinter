@@ -42,6 +42,14 @@ export default function App() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  useEffect(() => {
+    if (selectedDeck) {
+      document.title = `${selectedDeck.title} - StudySprinter`;
+    } else {
+      document.title = "StudySprinter";
+    }
+  }, [selectedDeck]);
+
   async function fetchDecks() {
     setLoading(true);
     try {
