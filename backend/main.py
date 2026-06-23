@@ -47,6 +47,7 @@ class StatsRequest(BaseModel):
 
 
 @app.get("/")
+@app.head("/")
 def root():
     return {"status": "StudyAI backend is running"}
 
