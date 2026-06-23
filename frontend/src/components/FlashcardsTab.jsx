@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 export default function FlashcardsTab({ flashcards, onCardReviewed }) {
   const [revealed, setRevealed] = useState({});
@@ -7,7 +7,9 @@ export default function FlashcardsTab({ flashcards, onCardReviewed }) {
     return (
       <div className="empty-state">
         <div className="empty-title">No flashcards yet</div>
-        <div className="empty-sub">Generate a study set from the Notes tab to get started.</div>
+        <div className="empty-sub">
+          Generate a study set from the Notes tab to get started.
+        </div>
       </div>
     );
   }
@@ -16,15 +18,38 @@ export default function FlashcardsTab({ flashcards, onCardReviewed }) {
 
   function toggle(i) {
     const wasRevealed = revealed[i];
-    setRevealed(prev => ({ ...prev, [i]: !prev[i] }));
+    setRevealed((prev) => ({ ...prev, [i]: !prev[i] }));
     if (!wasRevealed && onCardReviewed) onCardReviewed();
   }
 
   return (
     <div>
       <div className="fc-progress-row">
-        <span>{reviewedCount} of {flashcards.length} revealed</span>
-        {reviewedCount === flashcards.length && <span style={{ color: '#059669', fontWeight: 600 }}>All done!</span>}
+        <span>
+          {reviewedCount} of {flashcards.length} revealed
+        </span>
+        {reviewedCount === flashcards.length && (
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <span style={{ color: "#059669", fontWeight: 600 }}>
+              All revealed!
+            </span>
+            <button
+              onClick={() => setRevealed({})}
+              style={{
+                padding: "4px 12px",
+                background: "none",
+                border: "1px solid #e5e7eb",
+                borderRadius: "6px",
+                fontFamily: "Inter, sans-serif",
+                fontSize: "12px",
+                fontWeight: 500,
+                color: "#6b7280",
+                cursor: "pointer",
+              }}>
+              Reset cards
+            </button>
+          </div>
+        )}
       </div>
       <div className="fc-split-grid">
         {flashcards.map((fc, i) => (
@@ -34,11 +59,10 @@ export default function FlashcardsTab({ flashcards, onCardReviewed }) {
               <div className="fc-split-text">{fc.q}</div>
             </div>
             <div
-              className={`fc-split-answer ${revealed[i] ? 'revealed' : ''}`}
-              onClick={() => toggle(i)}
-            >
+              className={`fc-split-answer ${revealed[i] ? "revealed" : ""}`}
+              onClick={() => toggle(i)}>
               <div className="fc-split-label">
-                {revealed[i] ? 'Answer' : 'Click to reveal'}
+                {revealed[i] ? "Answer" : "Click to reveal"}
               </div>
               {revealed[i] ? (
                 <>

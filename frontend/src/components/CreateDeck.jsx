@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { generateStudySet } from '../api/claude';
+import React, { useState } from "react";
+import { generateStudySet } from "../api/claude";
 
 const EXAMPLE_NOTES = `Big O Notation is used to describe the performance or complexity of an algorithm, specifically how runtime or space requirements grow as the input size increases.
 
@@ -25,27 +25,32 @@ Different inputs use different variables so O(a + b) not O(n + n).
 Space complexity follows the same notation but measures memory usage instead of time.`;
 
 export default function CreateDeck({ onDeckCreated, onCancel }) {
-  const [title, setTitle] = useState('');
-  const [notes, setNotes] = useState('');
+  const [title, setTitle] = useState("");
+  const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   async function handleGenerate() {
-    if (!title.trim()) { setError('Give your deck a name first.'); return; }
-    if (notes.trim().length < 100) {
-      setError(`Add a bit more content. You have ${notes.trim().length} characters, aim for at least 100.`);
+    if (!title.trim()) {
+      setError("Give your deck a name first.");
       return;
     }
-    setError('');
+    if (notes.trim().length < 300) {
+      setError(
+        `Add more content to your notes. You have ${notes.trim().length} characters, aim for at least 300 for a good study set.`,
+      );
+      return;
+    }
+    setError("");
     setLoading(true);
     try {
       const result = await generateStudySet(notes, title.trim());
       onDeckCreated(result);
     } catch (e) {
-      if (e.message.includes('fetch') || e.message.includes('Failed')) {
+      if (e.message.includes("fetch") || e.message.includes("Failed")) {
         setError("Couldn't connect to the backend. Make sure it's running.");
       } else {
-        setError(e.message || 'Something went wrong. Try again.');
+        setError(e.message || "Something went wrong. Try again.");
       }
     } finally {
       setLoading(false);
@@ -56,32 +61,58 @@ export default function CreateDeck({ onDeckCreated, onCancel }) {
     <div className="create-deck">
       <div className="create-deck-header">
         <h2 className="create-deck-title">Create a new deck</h2>
-        <button className="btn-secondary" onClick={onCancel}>Cancel</button>
+        <button className="btn-secondary" onClick={onCancel}>
+          Cancel
+        </button>
       </div>
       <div className="card">
         <div className="card-label">Deck Name</div>
         <input
           className="deck-name-input"
           value={title}
-          onChange={e => { setTitle(e.target.value); setError(''); }}
+          onChange={(e) => {
+            setTitle(e.target.value);
+            setError("");
+          }}
           placeholder="e.g. Big O Notation, Week 3 Lecture..."
         />
-        {error && error.includes('name') && <p className="error-msg">{error}</p>}
+        {error && error.includes("name") && (
+          <p className="error-msg">{error}</p>
+        )}
       </div>
       <div className="card">
         <div className="card-label">Your Notes</div>
         <textarea
           value={notes}
-          onChange={e => { setNotes(e.target.value); setError(''); }}
+          onChange={(e) => {
+            setNotes(e.target.value);
+            setError("");
+          }}
           placeholder="Paste your lecture notes, textbook content, or anything you need to study..."
           rows={12}
         />
-        {error && !error.includes('name') && <p className="error-msg">{error}</p>}
+        {error && !error.includes("name") && (
+          <p className="error-msg">{error}</p>
+        )}
         <div className="action-row">
-          <button className="btn-primary" onClick={handleGenerate} disabled={loading}>
-            {loading ? <><span className="spinner" /> Generating your study set...</> : 'Start Sprinting'}
+          <button
+            className="btn-primary"
+            onClick={handleGenerate}
+            disabled={loading}>
+            {loading ? (
+              <>
+                <span className="spinner" /> Generating your study set...
+              </>
+            ) : (
+              "Generate Study Set"
+            )}
           </button>
-          <button className="btn-secondary" onClick={() => { setNotes(EXAMPLE_NOTES); setError(''); }}>
+          <button
+            className="btn-secondary"
+            onClick={() => {
+              setNotes(EXAMPLE_NOTES);
+              setError("");
+            }}>
             Try an example
           </button>
         </div>

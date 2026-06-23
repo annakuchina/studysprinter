@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 export default function QuizTab({ quiz, onScore }) {
   const [answered, setAnswered] = useState({});
@@ -9,11 +9,24 @@ export default function QuizTab({ quiz, onScore }) {
     setResult(null);
   }, [quiz]);
 
+  const shuffledQuiz = React.useMemo(() => {
+    return [...quiz]
+      .sort(() => Math.random() - 0.5)
+      .map((q) => {
+        const options = [...q.options];
+        const correctAnswer = options[q.correct];
+        options.sort(() => Math.random() - 0.5);
+        return { ...q, options, correct: options.indexOf(correctAnswer) };
+      });
+  }, [quiz]);
+
   if (!quiz.length) {
     return (
       <div className="empty-state">
         <div className="empty-title">No quiz yet</div>
-        <div className="empty-sub">Generate a study set from the Notes tab to get started.</div>
+        <div className="empty-sub">
+          Generate a study set from the Notes tab to get started.
+        </div>
       </div>
     );
   }
@@ -22,11 +35,18 @@ export default function QuizTab({ quiz, onScore }) {
     if (answered[qi] !== undefined) return;
     const newAnswered = { ...answered, [qi]: oi };
     setAnswered(newAnswered);
-    if (Object.keys(newAnswered).length === quiz.length) {
-      const correct = quiz.filter((q, i) => newAnswered[i] === q.correct).length;
-      const pct = Math.round((correct / quiz.length) * 100);
-      setResult({ correct, total: quiz.length, pct });
+    if (Object.keys(newAnswered).length === shuffledQuiz.length) {
+      const correct = shuffledQuiz.filter(
+        (q, i) => newAnswered[i] === q.correct,
+      ).length;
+      const pct = Math.round((correct / shuffledQuiz.length) * 100);
+      setResult({ correct, total: shuffledQuiz.length, pct });
       if (onScore) onScore(pct);
+      setTimeout(() => {
+        document
+          .getElementById("quiz-result")
+          .scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 100);
     }
   }
 
@@ -36,21 +56,24 @@ export default function QuizTab({ quiz, onScore }) {
   }
 
   function getOptClass(qi, oi) {
-    if (answered[qi] === undefined) return 'opt';
-    if (oi === quiz[qi].correct) return 'opt correct';
-    if (oi === answered[qi]) return 'opt wrong';
-    return 'opt disabled';
+    if (answered[qi] === undefined) return "opt";
+    if (oi === shuffledQuiz[qi].correct) return "opt correct";
+    if (oi === answered[qi]) return "opt wrong";
+    return "opt disabled";
   }
 
   return (
     <div id="quiz-top">
-      {quiz.map((q, qi) => (
+      {shuffledQuiz.map((q, qi) => (
         <div key={qi} className="quiz-q">
           <span className="tag tag-q">Question {qi + 1}</span>
           <div className="q-text">{q.q}</div>
           <div className="quiz-options">
             {q.options.map((opt, oi) => (
-              <button key={oi} className={getOptClass(qi, oi)} onClick={() => answer(qi, oi)}>
+              <button
+                key={oi}
+                className={getOptClass(qi, oi)}
+                onClick={() => answer(qi, oi)}>
                 {String.fromCharCode(65 + oi)}. {opt}
               </button>
             ))}
@@ -59,13 +82,22 @@ export default function QuizTab({ quiz, onScore }) {
       ))}
 
       {result && (
-        <div className="score-result">
+        <div className="score-result" id="quiz-result">
           <div className="score-num">{result.pct}%</div>
-          <div className="score-sub">{result.correct} of {result.total} correct</div>
-          <div className="score-msg">
-            {result.pct >= 80 ? 'Great work.' : result.pct >= 60 ? 'Good effort.' : 'Keep studying.'}
+          <div className="score-sub">
+            {result.correct} of {result.total} correct
           </div>
-          <button className="btn-primary" onClick={retake} style={{ maxWidth: 200, margin: '1rem auto 0' }}>
+          <div className="score-msg">
+            {result.pct >= 80
+              ? "Great work."
+              : result.pct >= 60
+                ? "Good effort."
+                : "Keep studying."}
+          </div>
+          <button
+            className="btn-primary"
+            onClick={retake}
+            style={{ maxWidth: 200, margin: "1rem auto 0" }}>
             Retake Quiz
           </button>
         </div>

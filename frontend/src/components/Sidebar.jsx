@@ -118,10 +118,11 @@ function DeckItem({ deck, selectedId, onSelect, onDelete, onPin }) {
       <div className="sidebar-item-content">
         <div className="sidebar-item-title">{deck.title}</div>
         <div className="sidebar-item-date">
-          {new Date(deck.created_at).toLocaleDateString("en-AU", {
-            day: "numeric",
-            month: "short",
-          })}
+          <div className="sidebar-item-date">
+            {deck.last_studied
+              ? `Last studied ${new Date(deck.last_studied).toLocaleDateString("en-AU", { day: "numeric", month: "short", year: "numeric" })}`
+              : `Created ${new Date(deck.created_at).toLocaleDateString("en-AU", { day: "numeric", month: "short", year: "numeric" })}`}
+          </div>
         </div>
       </div>
       <div className="sidebar-item-actions">

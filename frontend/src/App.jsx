@@ -31,7 +31,12 @@ export default function App() {
     setLoading(true);
     try {
       const data = await getStudySets();
-      setDecks(data);
+      const sorted = data.sort((a, b) => {
+        const aDate = a.last_studied || a.created_at;
+        const bDate = b.last_studied || b.created_at;
+        return new Date(bDate) - new Date(aDate);
+      });
+      setDecks(sorted);
     } catch (e) {
       console.error(e);
     } finally {
@@ -42,7 +47,8 @@ export default function App() {
   async function handleSelectDeck(id) {
     try {
       const data = await getStudySet(id);
-      setSelectedDeck(data);
+      const sidebarDeck = decks.find((d) => d.id === id);
+      setSelectedDeck({ ...data, created_at: sidebarDeck?.created_at });
       setView("study");
     } catch (e) {
       console.error(e);
@@ -77,7 +83,11 @@ export default function App() {
   }
 
   function handleDeckCreated(deck) {
-    const deckWithDate = { ...deck, created_at: new Date().toISOString() };
+    console.log("deck returned:", deck);
+    const deckWithDate = {
+      ...deck,
+      created_at: deck.created_at || new Date().toISOString(),
+    };
     setDecks([deckWithDate, ...decks]);
     setSelectedDeck(deckWithDate);
     setView("study");
@@ -134,7 +144,7 @@ export default function App() {
             />
           )}
           {view === "study" && selectedDeck && (
-            <StudyView deck={selectedDeck} />
+            <StudyView deck={selectedDeck} onStatsRecorded={fetchDecks} />
           )}
         </main>
       </div>
