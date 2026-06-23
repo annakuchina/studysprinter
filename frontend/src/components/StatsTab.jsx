@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getDeckStats } from "../api/claude";
 
-export default function StatsTab({ deckId }) {
+export default function StatsTab({ deckId, lastUpdated }) {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -18,7 +18,7 @@ export default function StatsTab({ deckId }) {
       }
     }
     fetchStats();
-  }, [deckId]);
+  }, [deckId, lastUpdated]);
 
   if (loading)
     return (

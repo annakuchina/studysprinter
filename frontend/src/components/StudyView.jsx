@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import FlashcardsTab from "./FlashcardsTab";
 import QuizTab from "./QuizTab";
 import StatsTab from "./StatsTab";
@@ -6,11 +6,17 @@ import { recordStats } from "../api/claude";
 
 export default function StudyView({ deck, onStatsRecorded }) {
   const [activeTab, setActiveTab] = useState("flashcards");
+  const [statsKey, setStatsKey] = useState(0);
+
+  useEffect(() => {
+    setActiveTab("flashcards");
+  }, [deck.id]);
 
   async function handleScore(pct) {
     try {
       await recordStats(deck.id, pct, 0);
       if (onStatsRecorded) onStatsRecorded();
+      setStatsKey((prev) => prev + 1);
     } catch (e) {
       console.error(e);
     }
@@ -55,21 +61,23 @@ export default function StudyView({ deck, onStatsRecorded }) {
         </button>
       </div>
       <div className="study-content">
-        {activeTab === "flashcards" && (
+        <div style={{ display: activeTab === "flashcards" ? "block" : "none" }}>
           <FlashcardsTab
             flashcards={deck.flashcards}
             onCardReviewed={() => {}}
           />
-        )}
-        {activeTab === "quiz" && (
+        </div>
+        <div style={{ display: activeTab === "quiz" ? "block" : "none" }}>
           <QuizTab quiz={deck.quiz} onScore={handleScore} />
-        )}
-        {activeTab === "stats" && <StatsTab deckId={deck.id} />}
-        {activeTab === "notes" && (
+        </div>
+        <div style={{ display: activeTab === "stats" ? "block" : "none" }}>
+          <StatsTab deckId={deck.id} lastUpdated={statsKey} />
+        </div>
+        <div style={{ display: activeTab === "notes" ? "block" : "none" }}>
           <div className="notes-view">
             <div className="notes-content">{deck.notes}</div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

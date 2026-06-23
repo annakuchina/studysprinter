@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faThumbTack, faXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+  faThumbTack,
+  faXmark,
+  faChevronLeft,
+  faChevronRight,
+  faLayerGroup,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function Sidebar({
   decks,
@@ -10,8 +16,17 @@ export default function Sidebar({
   onDelete,
   onPin,
   onNewDeck,
+  isOpen,
+  onToggle,
 }) {
   const [confirmDelete, setConfirmDelete] = useState(null);
+  const [animating, setAnimating] = useState(false);
+
+  function handleToggle() {
+    setAnimating(true);
+    onToggle();
+    setTimeout(() => setAnimating(false), 250);
+  }
 
   function handleDeleteClick(e, deck) {
     e.stopPropagation();
@@ -32,57 +47,78 @@ export default function Sidebar({
   const unpinned = decks.filter((d) => !d.pinned);
 
   return (
-    <aside className="sidebar">
+    <aside
+      className={`sidebar ${isOpen ? "" : "collapsed"} ${animating ? "animating" : ""}`}>
       <div className="sidebar-header">
-        <span className="sidebar-title">Your Decks</span>
-        <button className="sidebar-new-btn" onClick={onNewDeck}>
-          + New
-        </button>
+        {isOpen && <span className="sidebar-title">Your Decks</span>}
+        <div
+          style={{ display: "flex", gap: 8, marginLeft: isOpen ? "auto" : 0 }}>
+          {isOpen && (
+            <button
+              className="sidebar-new-btn"
+              onClick={onNewDeck}
+              style={{ visibility: isOpen ? "visible" : "hidden" }}>
+              + New
+            </button>
+          )}
+          <button
+            className="sidebar-toggle-btn"
+            onClick={handleToggle}
+            title={isOpen ? "Collapse" : "Expand"}>
+            <FontAwesomeIcon icon={isOpen ? faChevronLeft : faChevronRight} />
+          </button>
+        </div>
       </div>
 
-      <div className="sidebar-list">
-        {loading && <div className="sidebar-empty">Loading...</div>}
+      {!isOpen && (
+        <div className="sidebar-collapsed-icon">
+          <FontAwesomeIcon icon={faLayerGroup} />
+        </div>
+      )}
 
-        {!loading && decks.length === 0 && (
-          <div className="sidebar-empty">
-            No decks yet. Create your first one!
-          </div>
-        )}
+      {isOpen && (
+        <div className="sidebar-list">
+          {loading && <div className="sidebar-empty">Loading...</div>}
 
-        {!loading && pinned.length > 0 && (
-          <>
-            <div className="sidebar-section-label">Pinned</div>
-            {pinned.map((deck) => (
-              <DeckItem
-                key={deck.id}
-                deck={deck}
-                selectedId={selectedId}
-                onSelect={onSelect}
-                onDelete={handleDeleteClick}
-                onPin={handlePinClick}
-              />
-            ))}
-          </>
-        )}
+          {!loading && decks.length === 0 && (
+            <div className="sidebar-empty">
+              No decks yet. Create your first one!
+            </div>
+          )}
 
-        {!loading && unpinned.length > 0 && (
-          <>
-            {pinned.length > 0 && (
+          {!loading && pinned.length > 0 && (
+            <>
+              <div className="sidebar-section-label">Pinned</div>
+              {pinned.map((deck) => (
+                <DeckItem
+                  key={deck.id}
+                  deck={deck}
+                  selectedId={selectedId}
+                  onSelect={onSelect}
+                  onDelete={handleDeleteClick}
+                  onPin={handlePinClick}
+                />
+              ))}
+            </>
+          )}
+
+          {!loading && unpinned.length > 0 && (
+            <>
               <div className="sidebar-section-label">All Decks</div>
-            )}
-            {unpinned.map((deck) => (
-              <DeckItem
-                key={deck.id}
-                deck={deck}
-                selectedId={selectedId}
-                onSelect={onSelect}
-                onDelete={handleDeleteClick}
-                onPin={handlePinClick}
-              />
-            ))}
-          </>
-        )}
-      </div>
+              {unpinned.map((deck) => (
+                <DeckItem
+                  key={deck.id}
+                  deck={deck}
+                  selectedId={selectedId}
+                  onSelect={onSelect}
+                  onDelete={handleDeleteClick}
+                  onPin={handlePinClick}
+                />
+              ))}
+            </>
+          )}
+        </div>
+      )}
 
       {confirmDelete && (
         <div className="delete-overlay" onClick={() => setConfirmDelete(null)}>
@@ -90,8 +126,8 @@ export default function Sidebar({
             <div className="delete-modal-title">Delete deck?</div>
             <div className="delete-modal-sub">
               This will permanently delete{" "}
-              <strong>{confirmDelete.title}</strong> and all its flashcards and
-              quiz questions.
+              <strong>{confirmDelete.title}</strong> and all its notes,
+              flashcards, quiz questions and stats.
             </div>
             <div className="delete-modal-actions">
               <button
@@ -118,11 +154,9 @@ function DeckItem({ deck, selectedId, onSelect, onDelete, onPin }) {
       <div className="sidebar-item-content">
         <div className="sidebar-item-title">{deck.title}</div>
         <div className="sidebar-item-date">
-          <div className="sidebar-item-date">
-            {deck.last_studied
-              ? `Last studied ${new Date(deck.last_studied).toLocaleDateString("en-AU", { day: "numeric", month: "short", year: "numeric" })}`
-              : `Created ${new Date(deck.created_at).toLocaleDateString("en-AU", { day: "numeric", month: "short", year: "numeric" })}`}
-          </div>
+          {deck.last_studied
+            ? `Last studied ${new Date(deck.last_studied).toLocaleDateString("en-AU", { day: "numeric", month: "short", year: "numeric" })}`
+            : `Created ${new Date(deck.created_at).toLocaleDateString("en-AU", { day: "numeric", month: "short", year: "numeric" })}`}
         </div>
       </div>
       <div className="sidebar-item-actions">

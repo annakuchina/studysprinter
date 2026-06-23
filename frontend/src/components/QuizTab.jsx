@@ -1,23 +1,25 @@
 import React, { useState, useEffect } from "react";
 
+function shuffleQuiz(quiz) {
+  return [...quiz]
+    .sort(() => Math.random() - 0.5)
+    .map((q) => {
+      const options = [...q.options];
+      const correctAnswer = options[q.correct];
+      options.sort(() => Math.random() - 0.5);
+      return { ...q, options, correct: options.indexOf(correctAnswer) };
+    });
+}
+
 export default function QuizTab({ quiz, onScore }) {
   const [answered, setAnswered] = useState({});
   const [result, setResult] = useState(null);
+  const [shuffledQuiz, setShuffledQuiz] = useState(() => shuffleQuiz(quiz));
 
   useEffect(() => {
     setAnswered({});
     setResult(null);
-  }, [quiz]);
-
-  const shuffledQuiz = React.useMemo(() => {
-    return [...quiz]
-      .sort(() => Math.random() - 0.5)
-      .map((q) => {
-        const options = [...q.options];
-        const correctAnswer = options[q.correct];
-        options.sort(() => Math.random() - 0.5);
-        return { ...q, options, correct: options.indexOf(correctAnswer) };
-      });
+    setShuffledQuiz(shuffleQuiz(quiz));
   }, [quiz]);
 
   if (!quiz.length) {
@@ -53,6 +55,13 @@ export default function QuizTab({ quiz, onScore }) {
   function retake() {
     setAnswered({});
     setResult(null);
+    setShuffledQuiz(shuffleQuiz(quiz));
+  }
+
+  function reset() {
+    setAnswered({});
+    setResult(null);
+    setShuffledQuiz(shuffleQuiz(quiz));
   }
 
   function getOptClass(qi, oi) {
@@ -62,8 +71,36 @@ export default function QuizTab({ quiz, onScore }) {
     return "opt disabled";
   }
 
+  const hasAnswered = Object.keys(answered).length > 0;
+
   return (
     <div id="quiz-top">
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          marginBottom: 12,
+          minHeight: 28,
+        }}>
+        {hasAnswered && !result && (
+          <button
+            onClick={reset}
+            style={{
+              padding: "4px 12px",
+              background: "none",
+              border: "1px solid #e5e7eb",
+              borderRadius: "6px",
+              fontFamily: "Inter, sans-serif",
+              fontSize: "12px",
+              fontWeight: 500,
+              color: "#6b7280",
+              cursor: "pointer",
+            }}>
+            Reset Quiz
+          </button>
+        )}
+      </div>
+
       {shuffledQuiz.map((q, qi) => (
         <div key={qi} className="quiz-q">
           <span className="tag tag-q">Question {qi + 1}</span>

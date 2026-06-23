@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 export default function FlashcardsTab({ flashcards, onCardReviewed }) {
   const [revealed, setRevealed] = useState({});
+  const [order, setOrder] = useState(flashcards.map((_, i) => i));
 
   if (!flashcards.length) {
     return (
@@ -22,17 +23,24 @@ export default function FlashcardsTab({ flashcards, onCardReviewed }) {
     if (!wasRevealed && onCardReviewed) onCardReviewed();
   }
 
+  function shuffle() {
+    setOrder((prev) => [...prev].sort(() => Math.random() - 0.5));
+    setRevealed({});
+  }
+
   return (
     <div>
       <div className="fc-progress-row">
         <span>
           {reviewedCount} of {flashcards.length} revealed
         </span>
-        {reviewedCount === flashcards.length && (
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          {reviewedCount === flashcards.length && (
             <span style={{ color: "#059669", fontWeight: 600 }}>
               All revealed!
             </span>
+          )}
+          {reviewedCount > 0 && (
             <button
               onClick={() => setRevealed({})}
               style={{
@@ -48,33 +56,53 @@ export default function FlashcardsTab({ flashcards, onCardReviewed }) {
               }}>
               Reset cards
             </button>
-          </div>
-        )}
+          )}
+          <button
+            onClick={shuffle}
+            style={{
+              padding: "4px 12px",
+              background: "none",
+              border: "1px solid #e5e7eb",
+              borderRadius: "6px",
+              fontFamily: "Inter, sans-serif",
+              fontSize: "12px",
+              fontWeight: 500,
+              color: "#6b7280",
+              cursor: "pointer",
+            }}>
+            Shuffle
+          </button>
+        </div>
       </div>
       <div className="fc-split-grid">
-        {flashcards.map((fc, i) => (
-          <div key={i} className="fc-split-card">
-            <div className="fc-split-question">
-              <div className="fc-split-label">Question</div>
-              <div className="fc-split-text">{fc.q}</div>
-            </div>
-            <div
-              className={`fc-split-answer ${revealed[i] ? "revealed" : ""}`}
-              onClick={() => toggle(i)}>
-              <div className="fc-split-label">
-                {revealed[i] ? "Answer" : "Click to reveal"}
+        {order.map((cardIndex, displayIndex) => {
+          const fc = flashcards[cardIndex];
+          return (
+            <div key={cardIndex} className="fc-split-card">
+              <div className="fc-split-question">
+                <div className="fc-split-label">
+                  Flashcard {displayIndex + 1}
+                </div>
+                <div className="fc-split-text">{fc.q}</div>
               </div>
-              {revealed[i] ? (
-                <>
-                  <div className="fc-split-text answer-text">{fc.a}</div>
-                  <div className="fc-split-hide">CLICK TO HIDE</div>
-                </>
-              ) : (
-                <div className="fc-split-placeholder" />
-              )}
+              <div
+                className={`fc-split-answer ${revealed[cardIndex] ? "revealed" : ""}`}
+                onClick={() => toggle(cardIndex)}>
+                <div className="fc-split-label">
+                  {revealed[cardIndex] ? "Answer" : "Click to reveal"}
+                </div>
+                {revealed[cardIndex] ? (
+                  <>
+                    <div className="fc-split-text answer-text">{fc.a}</div>
+                    <div className="fc-split-hide">CLICK TO HIDE</div>
+                  </>
+                ) : (
+                  <div className="fc-split-placeholder" />
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

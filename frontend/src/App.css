@@ -93,6 +93,9 @@ body.dark .theme-btn {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  transition:
+    width 0.25s ease,
+    transform 0.25s ease;
 }
 
 body.dark .sidebar {
@@ -107,6 +110,14 @@ body.dark .sidebar {
   padding: 1rem 1.25rem;
   border-bottom: 1px solid #e5e7eb;
   flex-shrink: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  min-height: 57px;
+}
+
+.sidebar.collapsed .sidebar-header {
+  justify-content: center;
+  padding: 1rem 0;
 }
 
 body.dark .sidebar-header {
@@ -120,6 +131,8 @@ body.dark .sidebar-header {
   color: #6b7280;
   text-transform: uppercase;
   letter-spacing: 0.8px;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 body.dark .sidebar-title {
@@ -1065,4 +1078,92 @@ body.dark .stat-card {
 
 body.dark .notes-content {
   color: #9ca3af;
+}
+
+.sidebar.collapsed {
+  width: 48px;
+}
+
+.sidebar-toggle-btn {
+  width: 28px;
+  height: 28px;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 11px;
+  color: #1c1c1c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+body.dark .sidebar-toggle-btn {
+  color: #e8e8e8;
+}
+
+.sidebar-toggle-btn:hover {
+  background: #e5e7eb;
+  color: #1c1c1c;
+}
+
+body.dark .sidebar-toggle-btn:hover {
+  background: #333333;
+  color: #ffffff;
+}
+
+.sidebar-collapsed-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 0;
+  color: #9ca3af;
+  font-size: 18px;
+}
+
+@media (max-width: 768px) {
+  .app-body {
+    position: relative;
+  }
+
+  .sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 300;
+    transform: translateX(0);
+    transition:
+      transform 0.25s ease,
+      width 0.25s ease;
+  }
+
+  .sidebar.collapsed {
+    width: 48px;
+    transform: translateX(0);
+  }
+
+  .main-content {
+    margin-left: 48px;
+    transition: margin-left 0.25s ease;
+  }
+}
+
+.sidebar.collapsed .sidebar-section-label,
+.sidebar.collapsed .sidebar-item,
+.sidebar.collapsed .sidebar-new-btn,
+.sidebar.collapsed .sidebar-title,
+.sidebar.animating .sidebar-section-label,
+.sidebar.animating .sidebar-item,
+.sidebar.animating .sidebar-new-btn {
+  opacity: 0;
+}
+
+.sidebar:not(.collapsed):not(.animating) .sidebar-section-label,
+.sidebar:not(.collapsed):not(.animating) .sidebar-item,
+.sidebar:not(.collapsed):not(.animating) .sidebar-new-btn,
+.sidebar:not(.collapsed):not(.animating) .sidebar-title {
+  opacity: 1;
+  transition: opacity 0.08s ease;
 }
