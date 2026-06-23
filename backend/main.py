@@ -178,6 +178,7 @@ def get_study_set(study_set_id: str):
         "title": study_set.data["title"],
         "summary": study_set.data["summary"],
         "notes": study_set.data["notes"],
+        "created_at": study_set.data["created_at"],
         "flashcards": [{"q": fc["question"], "a": fc["answer"]} for fc in flashcards.data],
         "quiz": [{"q": q["question"], "options": q["options"], "correct": q["correct_index"]} for q in quiz.data]
     }
