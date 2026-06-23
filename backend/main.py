@@ -41,16 +41,6 @@ class QuizQuestion(BaseModel):
     options: list[str]
     correct: int
 
-
-class StudySetResponse(BaseModel):
-    id: str
-    title: str
-    summary: str
-    flashcards: list[Flashcard]
-    quiz: list[QuizQuestion]
-    created_at: str = None
-
-
 class StatsRequest(BaseModel):
     quiz_score: int = None
     cards_reviewed: int = 0
@@ -61,7 +51,7 @@ def root():
     return {"status": "StudyAI backend is running"}
 
 
-@app.post("/generate", response_model=StudySetResponse)
+@app.post("/generate")
 def generate_study_set(body: NotesRequest):
     if not body.notes.strip():
         raise HTTPException(status_code=400, detail="Notes cannot be empty")
@@ -148,7 +138,8 @@ Notes:
             "summary": data["summary"],
             "flashcards": data["flashcards"],
             "quiz": shuffled_quiz,
-            "created_at": study_set.data[0]["created_at"]
+            "created_at": study_set.data[0]["created_at"],
+            "notes": body.notes
         }
 
     except json.JSONDecodeError:
