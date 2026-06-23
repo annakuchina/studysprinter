@@ -1,4 +1,5 @@
-const BACKEND_URL = "http://localhost:8000";
+const BACKEND_URL =
+  process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
 
 export async function generateStudySet(notes, title) {
   const response = await fetch(`${BACKEND_URL}/generate`, {
