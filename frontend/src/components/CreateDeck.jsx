@@ -45,7 +45,7 @@ export default function CreateDeck({ onDeckCreated, onCancel }) {
     setLoading(true);
     try {
       const result = await generateStudySet(notes, title.trim());
-      onDeckCreated(result);
+      onDeckCreated({ ...result, notes });
     } catch (e) {
       if (e.message.includes("fetch") || e.message.includes("Failed")) {
         setError("Couldn't connect to the backend. Make sure it's running.");

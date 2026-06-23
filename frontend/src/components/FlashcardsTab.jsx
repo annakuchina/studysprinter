@@ -41,35 +41,11 @@ export default function FlashcardsTab({ flashcards, onCardReviewed }) {
             </span>
           )}
           {reviewedCount > 0 && (
-            <button
-              onClick={() => setRevealed({})}
-              style={{
-                padding: "4px 12px",
-                background: "none",
-                border: "1px solid #e5e7eb",
-                borderRadius: "6px",
-                fontFamily: "Inter, sans-serif",
-                fontSize: "12px",
-                fontWeight: 500,
-                color: "#6b7280",
-                cursor: "pointer",
-              }}>
+            <button onClick={() => setRevealed({})} className="btn-reset">
               Reset cards
             </button>
           )}
-          <button
-            onClick={shuffle}
-            style={{
-              padding: "4px 12px",
-              background: "none",
-              border: "1px solid #e5e7eb",
-              borderRadius: "6px",
-              fontFamily: "Inter, sans-serif",
-              fontSize: "12px",
-              fontWeight: 500,
-              color: "#6b7280",
-              cursor: "pointer",
-            }}>
+          <button onClick={shuffle} className="btn-reset">
             Shuffle
           </button>
         </div>

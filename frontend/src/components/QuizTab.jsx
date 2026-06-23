@@ -82,20 +82,8 @@ export default function QuizTab({ quiz, onScore }) {
           marginBottom: 12,
           minHeight: 28,
         }}>
-        {hasAnswered && !result && (
-          <button
-            onClick={reset}
-            style={{
-              padding: "4px 12px",
-              background: "none",
-              border: "1px solid #e5e7eb",
-              borderRadius: "6px",
-              fontFamily: "Inter, sans-serif",
-              fontSize: "12px",
-              fontWeight: 500,
-              color: "#6b7280",
-              cursor: "pointer",
-            }}>
+        {hasAnswered && (
+          <button onClick={reset} className="btn-reset">
             Reset Quiz
           </button>
         )}

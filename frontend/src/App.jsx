@@ -13,7 +13,9 @@ import {
 } from "./api/claude";
 
 export default function App() {
-  const [dark, setDark] = useState(false);
+  const [dark, setDark] = useState(
+    () => localStorage.getItem("theme") === "dark",
+  );
   const [decks, setDecks] = useState([]);
   const [selectedDeck, setSelectedDeck] = useState(null);
   const [view, setView] = useState("empty");
@@ -116,17 +118,10 @@ export default function App() {
     }
   }
 
-  async function handleDeckCreated(deck) {
-    try {
-      const fullDeck = await getStudySet(deck.id);
-      setDecks([{ ...deck, created_at: fullDeck.created_at }, ...decks]);
-      setSelectedDeck({ ...deck, created_at: fullDeck.created_at });
-      setView("study");
-    } catch (e) {
-      setDecks([deck, ...decks]);
-      setSelectedDeck(deck);
-      setView("study");
-    }
+  function handleDeckCreated(deck) {
+    setDecks([deck, ...decks]);
+    setSelectedDeck(deck);
+    setView("study");
   }
 
   return (
@@ -142,7 +137,14 @@ export default function App() {
           <span className="nav-brand">
             Study<span>Sprinter</span>
           </span>
-          <button className="theme-btn" onClick={() => setDark((d) => !d)}>
+          <button
+            className="theme-btn"
+            onClick={() => {
+              setDark((d) => {
+                localStorage.setItem("theme", !d ? "dark" : "light");
+                return !d;
+              });
+            }}>
             {dark ? "☀" : "◑"}
           </button>
         </div>

@@ -128,7 +128,7 @@ body.dark .sidebar-header {
   font-family: "Geist", sans-serif;
   font-size: 13px;
   font-weight: 600;
-  color: #6b7280;
+  color: #1c1c1c;
   text-transform: uppercase;
   letter-spacing: 0.8px;
   white-space: nowrap;
@@ -136,7 +136,7 @@ body.dark .sidebar-header {
 }
 
 body.dark .sidebar-title {
-  color: #9ca3af;
+  color: #d1d1d1;
 }
 
 .sidebar-new-btn {
@@ -447,6 +447,10 @@ body.dark .study-tabs {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
 }
 
+body.dark .study-tab {
+  color: #9ca3af;
+}
+
 body.dark .study-tab.active {
   background: #2a2a2a;
   color: #34d399;
@@ -456,7 +460,7 @@ body.dark .study-tab.active {
   color: #374151;
 }
 body.dark .study-tab:hover:not(.active) {
-  color: #d1d1d1;
+  color: #e8e8e8;
 }
 
 /* Cards */
@@ -1126,6 +1130,33 @@ body.dark .sidebar-toggle-btn:hover {
   padding: 1.5rem 0;
   color: #9ca3af;
   font-size: 18px;
+}
+
+.btn-reset {
+  padding: 4px 12px;
+  height: 28px;
+  background: #e5e7eb;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+body.dark .btn-reset {
+  background: #2a2a2a;
+  border-color: #333333;
+  color: #d1d1d1;
+}
+
+.btn-reset:hover {
+  background: #d1d5db;
+}
+body.dark .btn-reset:hover {
+  background: #333333;
 }
 
 @media (max-width: 768px) {

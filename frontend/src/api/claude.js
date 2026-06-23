@@ -11,7 +11,8 @@ export async function generateStudySet(notes, title) {
     const err = await response.json();
     throw new Error(err.detail || "Backend request failed");
   }
-  return response.json();
+  const data = await response.json();
+  return data;
 }
 
 export async function getStudySets() {
