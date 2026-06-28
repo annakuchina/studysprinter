@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Header
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from openai import OpenAI
@@ -6,6 +6,8 @@ from supabase import create_client, Client
 import json
 import os
 import random
+import jwt
+from typing import Optional
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -26,6 +28,17 @@ supabase: Client = create_client(
 )
 
 
+def get_user_id(authorization: str = Header(None)) -> str:
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    token = authorization.split(" ")[1]
+    try:
+        payload = jwt.decode(token, options={"verify_signature": False})
+        return payload.get("sub")
+    except Exception:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+
 class NotesRequest(BaseModel):
     notes: str
     title: str = "Untitled Study Set"
@@ -41,6 +54,7 @@ class QuizQuestion(BaseModel):
     options: list[str]
     correct: int
 
+
 class StatsRequest(BaseModel):
     quiz_score: int = None
     cards_reviewed: int = 0
@@ -53,7 +67,8 @@ def root():
 
 
 @app.post("/generate")
-def generate_study_set(body: NotesRequest):
+def generate_study_set(body: NotesRequest, authorization: Optional[str] = Header(None)):
+    user_id = get_user_id(authorization)
     if not body.notes.strip():
         raise HTTPException(status_code=400, detail="Notes cannot be empty")
 
@@ -91,7 +106,7 @@ Notes:
 
     try:
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-4o",
             messages=[{"role": "user", "content": prompt}],
             response_format={"type": "json_object"},
             max_tokens=2500,
@@ -101,7 +116,8 @@ Notes:
         study_set = supabase.table("study_sets").insert({
             "title": body.title,
             "notes": body.notes,
-            "summary": data["summary"]
+            "summary": data["summary"],
+            "user_id": user_id
         }).execute()
 
         study_set_id = study_set.data[0]["id"]
@@ -150,8 +166,9 @@ Notes:
 
 
 @app.get("/study-sets")
-def get_study_sets():
-    result = supabase.table("study_sets").select("id, title, summary, created_at, pinned").order("pinned", desc=True).order("created_at", desc=True).execute()
+def get_study_sets(authorization: Optional[str] = Header(None)):
+    user_id = get_user_id(authorization)
+    result = supabase.table("study_sets").select("id, title, summary, created_at, pinned").eq("user_id", user_id).order("pinned", desc=True).order("created_at", desc=True).execute()
     decks = result.data
     for deck in decks:
         stats = supabase.table("deck_stats").select("reviewed_at").eq("study_set_id", deck["id"]).order("reviewed_at", desc=True).limit(1).execute()
@@ -160,8 +177,9 @@ def get_study_sets():
 
 
 @app.get("/study-sets/{study_set_id}")
-def get_study_set(study_set_id: str):
-    study_set = supabase.table("study_sets").select("*").eq("id", study_set_id).single().execute()
+def get_study_set(study_set_id: str, authorization: Optional[str] = Header(None)):
+    user_id = get_user_id(authorization)
+    study_set = supabase.table("study_sets").select("*").eq("id", study_set_id).eq("user_id", user_id).single().execute()
     flashcards = supabase.table("flashcards").select("*").eq("study_set_id", study_set_id).order("position").execute()
     quiz = supabase.table("quiz_questions").select("*").eq("study_set_id", study_set_id).order("position").execute()
 
@@ -177,21 +195,24 @@ def get_study_set(study_set_id: str):
 
 
 @app.delete("/study-sets/{study_set_id}")
-def delete_study_set(study_set_id: str):
-    supabase.table("study_sets").delete().eq("id", study_set_id).execute()
+def delete_study_set(study_set_id: str, authorization: Optional[str] = Header(None)):
+    user_id = get_user_id(authorization)
+    supabase.table("study_sets").delete().eq("id", study_set_id).eq("user_id", user_id).execute()
     return {"status": "deleted"}
 
 
 @app.patch("/study-sets/{study_set_id}/pin")
-def toggle_pin(study_set_id: str):
-    study_set = supabase.table("study_sets").select("pinned").eq("id", study_set_id).single().execute()
+def toggle_pin(study_set_id: str, authorization: Optional[str] = Header(None)):
+    user_id = get_user_id(authorization)
+    study_set = supabase.table("study_sets").select("pinned").eq("id", study_set_id).eq("user_id", user_id).single().execute()
     new_pinned = not study_set.data["pinned"]
     supabase.table("study_sets").update({"pinned": new_pinned}).eq("id", study_set_id).execute()
     return {"pinned": new_pinned}
 
 
 @app.post("/study-sets/{study_set_id}/stats")
-def record_stats(study_set_id: str, body: StatsRequest):
+def record_stats(study_set_id: str, body: StatsRequest, authorization: Optional[str] = Header(None)):
+    get_user_id(authorization)
     supabase.table("deck_stats").insert({
         "study_set_id": study_set_id,
         "quiz_score": body.quiz_score,
@@ -201,7 +222,8 @@ def record_stats(study_set_id: str, body: StatsRequest):
 
 
 @app.get("/study-sets/{study_set_id}/stats")
-def get_stats(study_set_id: str):
+def get_stats(study_set_id: str, authorization: Optional[str] = Header(None)):
+    get_user_id(authorization)
     result = supabase.table("deck_stats").select("*").eq("study_set_id", study_set_id).order("reviewed_at", desc=True).execute()
     data = result.data
     if not data:
