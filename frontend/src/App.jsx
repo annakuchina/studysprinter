@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { supabase } from "./supabase";
+import Login from "./components/Login";
 import { faBookOpen } from "@fortawesome/free-solid-svg-icons";
 import "./App.css";
 import Sidebar from "./components/Sidebar";
@@ -22,6 +24,9 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth > 768);
   const [sidebarAnimating, setSidebarAnimating] = useState(false);
+
+  const [user, setUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
     document.body.classList.toggle("dark", dark);
@@ -51,6 +56,21 @@ export default function App() {
       document.title = "StudySprinter";
     }
   }, [selectedDeck]);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      setAuthLoading(false);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   async function fetchDecks() {
     setLoading(true);
@@ -124,6 +144,9 @@ export default function App() {
     setView("study");
   }
 
+  if (authLoading) return null;
+  if (!user) return <Login />;
+
   return (
     <div className="layout">
       <header className="main-nav">
@@ -146,6 +169,20 @@ export default function App() {
               });
             }}>
             {dark ? "☀" : "◑"}
+          </button>
+          <button
+            className="theme-btn"
+            onClick={() => supabase.auth.signOut()}
+            title="Sign out">
+            {user?.user_metadata?.avatar_url ? (
+              <img
+                src={user.user_metadata.avatar_url}
+                alt="avatar"
+                style={{ width: 20, height: 20, borderRadius: "50%" }}
+              />
+            ) : (
+              "↪"
+            )}
           </button>
         </div>
       </header>
