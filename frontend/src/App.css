@@ -1066,6 +1066,99 @@ body.dark .stat-card {
   font-size: 13px;
   color: #9ca3af;
 }
+/* Login */
+.login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: #f9fafb;
+}
+
+body.dark .login-page {
+  background: #141414;
+}
+
+.login-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 3rem 2.5rem;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+}
+
+body.dark .login-card {
+  background: #1c1c1c;
+  border-color: #2a2a2a;
+}
+
+.login-logo {
+  width: 56px;
+  height: 56px;
+  background: #059669;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.25rem;
+}
+
+.login-title {
+  font-family: "Geist", sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: #1c1c1c;
+  letter-spacing: -0.3px;
+  margin-bottom: 8px;
+}
+
+body.dark .login-title {
+  color: #d1d1d1;
+}
+
+.login-sub {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.login-google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.login-google-btn:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+body.dark .login-google-btn {
+  background: #2a2a2a;
+  border-color: #333333;
+  color: #d1d1d1;
+}
+
+body.dark .login-google-btn:hover {
+  background: #333333;
+}
 
 /* Notes */
 .notes-view {

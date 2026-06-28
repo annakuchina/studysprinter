@@ -3,7 +3,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { supabase } from "./supabase";
 import Login from "./components/Login";
 import { faBookOpen } from "@fortawesome/free-solid-svg-icons";
-import "./App.css";
+import "./styles/base.css";
+import "./styles/sidebar.css";
+import "./styles/study.css";
+import "./styles/forms.css";
+import "./styles/auth.css";
+import "./styles/modals.css";
 import Sidebar from "./components/Sidebar";
 import CreateDeck from "./components/CreateDeck";
 import StudyView from "./components/StudyView";
@@ -38,7 +43,8 @@ export default function App() {
 
   useEffect(() => {
     function handleResize() {
-      document.querySelector(".sidebar").style.transition = "none";
+      const sidebar = document.querySelector(".sidebar");
+      if (sidebar) sidebar.style.transition = "none";
       setSidebarOpen(window.innerWidth > 768);
       setTimeout(() => {
         const sidebar = document.querySelector(".sidebar");

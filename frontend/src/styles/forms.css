@@ -1,0 +1,233 @@
+/* Cards */
+.card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+body.dark .card {
+  background: #1c1c1c;
+  border-color: #2a2a2a;
+}
+
+.card-label {
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #6b7280;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+body.dark .card-label {
+  color: #9ca3af;
+}
+
+/* Form elements */
+textarea {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: 14px 16px;
+  color: #111111;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+body.dark textarea {
+  background: #1c1c1c;
+  border-color: #333333;
+  color: #d1d1d1;
+}
+textarea:focus {
+  border-color: #059669;
+}
+textarea::placeholder {
+  color: #6b7280;
+}
+body.dark textarea::placeholder {
+  color: #9ca3af;
+}
+
+.deck-name-input {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: 12px 16px;
+  color: #111111;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+body.dark .deck-name-input {
+  background: #1c1c1c;
+  border-color: #333333;
+  color: #d1d1d1;
+}
+.deck-name-input:focus {
+  border-color: #059669;
+}
+.deck-name-input::placeholder {
+  color: #6b7280;
+}
+body.dark .deck-name-input::placeholder {
+  color: #9ca3af;
+}
+
+.action-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+/* Buttons */
+.btn-primary {
+  padding: 11px 24px;
+  background: #059669;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: auto;
+}
+
+.btn-primary:hover {
+  background: #047857;
+}
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  padding: 13px 18px;
+  background: white;
+  color: #6b7280;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+body.dark .btn-secondary {
+  background: #1c1c1c;
+  border-color: #333333;
+  color: #9ca3af;
+}
+.btn-secondary:hover {
+  border-color: #059669;
+  color: #059669;
+}
+body.dark .btn-secondary:hover {
+  border-color: #059669;
+  color: #059669;
+}
+
+.btn-reset {
+  padding: 4px 12px;
+  height: 28px;
+  background: #e5e7eb;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: background 0.15s;
+  display: inline-flex;
+  align-items: center;
+}
+
+body.dark .btn-reset {
+  background: #2a2a2a;
+  border-color: #333333;
+  color: #d1d1d1;
+}
+.btn-reset:hover {
+  background: #d1d5db;
+}
+body.dark .btn-reset:hover {
+  background: #333333;
+}
+
+/* Create deck */
+.create-deck {
+  max-width: 680px;
+}
+
+.create-deck-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.create-deck-title {
+  font-family: "Geist", sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #1c1c1c;
+  letter-spacing: -0.3px;
+}
+
+body.dark .create-deck-title {
+  color: #d1d1d1;
+}
+
+/* Tags */
+.tag {
+  display: inline-block;
+  font-family: "Inter", sans-serif;
+  font-size: 10px;
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tag-fc {
+  background: #f0fdf4;
+  color: #059669;
+  border: 1px solid #bbf7d0;
+}
+body.dark .tag-fc {
+  background: rgba(5, 150, 105, 0.12);
+  color: #34d399;
+  border-color: rgba(5, 150, 105, 0.25);
+}
+
+.tag-q {
+  background: #eff6ff;
+  color: #1e40af;
+  border: 1px solid #bfdbfe;
+}
+body.dark .tag-q {
+  background: rgba(30, 64, 175, 0.15);
+  color: #93c5fd;
+  border-color: rgba(30, 64, 175, 0.25);
+}

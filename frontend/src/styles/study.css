@@ -1,0 +1,405 @@
+/* Study view */
+.study-view {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.study-view-header {
+  margin-bottom: 1.5rem;
+}
+
+.study-view-title {
+  font-family: "Geist", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #1c1c1c;
+  letter-spacing: -0.3px;
+  margin-bottom: 6px;
+}
+
+body.dark .study-view-title {
+  color: #d1d1d1;
+}
+
+.study-view-meta {
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 6px;
+  margin-bottom: 12px;
+}
+
+.study-view-summary {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+body.dark .study-view-summary {
+  color: #9ca3af;
+}
+
+/* Study tabs */
+.study-tabs {
+  display: flex;
+  gap: 2px;
+  background: #f3f4f6;
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 1.5rem;
+  width: fit-content;
+}
+
+body.dark .study-tabs {
+  background: #1e1e1e;
+}
+
+.study-tab {
+  padding: 8px 24px;
+  border: none;
+  background: transparent;
+  border-radius: 7px;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.study-tab.active {
+  background: white;
+  color: #059669;
+  font-weight: 600;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+body.dark .study-tab {
+  color: #9ca3af;
+}
+body.dark .study-tab.active {
+  background: #2a2a2a;
+  color: #34d399;
+}
+.study-tab:hover:not(.active) {
+  color: #374151;
+}
+body.dark .study-tab:hover:not(.active) {
+  color: #e8e8e8;
+}
+
+/* Flashcards */
+.fc-progress-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 16px;
+}
+
+body.dark .fc-progress-row {
+  color: #9ca3af;
+}
+
+.fc-split-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fc-split-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+body.dark .fc-split-card {
+  border-color: #2a2a2a;
+}
+
+.fc-split-question {
+  padding: 1.5rem;
+  background: white;
+  border-right: 1px solid #e5e7eb;
+}
+
+body.dark .fc-split-question {
+  background: #1c1c1c;
+  border-right-color: #2a2a2a;
+}
+
+.fc-split-answer {
+  padding: 1.5rem;
+  background: #f9fafb;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+body.dark .fc-split-answer {
+  background: #161616;
+}
+.fc-split-answer:hover {
+  background: #f3f4f6;
+}
+body.dark .fc-split-answer:hover {
+  background: #1e1e1e;
+}
+.fc-split-answer.revealed {
+  background: #f0fdf4;
+}
+body.dark .fc-split-answer.revealed {
+  background: rgba(5, 150, 105, 0.08);
+}
+
+.fc-split-label {
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #6b7280;
+  margin-bottom: 10px;
+}
+
+body.dark .fc-split-label {
+  color: #9ca3af;
+}
+.fc-split-answer.revealed .fc-split-label {
+  color: #059669;
+}
+body.dark .fc-split-answer.revealed .fc-split-label {
+  color: #34d399;
+}
+
+.fc-split-text {
+  font-family: "Inter", sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+  color: #1c1c1c;
+  line-height: 1.55;
+}
+
+body.dark .fc-split-text {
+  color: #d1d1d1;
+}
+.answer-text {
+  color: #111111;
+}
+body.dark .answer-text {
+  color: #d1d1d1;
+}
+.fc-split-placeholder {
+  height: 24px;
+}
+
+.fc-split-hide {
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: #047857;
+  margin-top: 10px;
+}
+
+body.dark .fc-split-hide {
+  color: #059669;
+}
+
+/* Quiz */
+.quiz-q {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 10px;
+}
+
+body.dark .quiz-q {
+  background: #1c1c1c;
+  border-color: #2a2a2a;
+}
+
+.q-text {
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #1c1c1c;
+  margin-bottom: 14px;
+  line-height: 1.55;
+}
+
+body.dark .q-text {
+  color: #d1d1d1;
+}
+
+.quiz-options {
+  display: grid;
+  gap: 8px;
+}
+
+.opt {
+  padding: 11px 16px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  color: #1c1c1c;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: left;
+  width: 100%;
+}
+
+body.dark .opt {
+  background: #1c1c1c;
+  border-color: #333333;
+  color: #9ca3af;
+}
+
+.opt:hover:not(.disabled):not(.correct):not(.wrong) {
+  border-color: #059669;
+  color: #059669;
+  background: #f0fdf4;
+}
+
+body.dark .opt:hover:not(.disabled):not(.correct):not(.wrong) {
+  border-color: #059669;
+  color: #34d399;
+  background: rgba(5, 150, 105, 0.1);
+}
+
+.opt.correct {
+  background: #f0fdf4;
+  border-color: #059669;
+  color: #065f46;
+  font-weight: 500;
+}
+.opt.wrong {
+  background: #fef2f2;
+  border-color: #fca5a5;
+  color: #991b1b;
+}
+
+body.dark .opt.correct {
+  background: rgba(5, 150, 105, 0.15);
+  border-color: #059669;
+  color: #34d399;
+}
+body.dark .opt.wrong {
+  background: rgba(220, 38, 38, 0.15);
+  border-color: #ef4444;
+  color: #f87171;
+}
+
+.opt.disabled {
+  cursor: default;
+}
+
+.score-result {
+  text-align: center;
+  padding: 2.5rem;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  margin-top: 1rem;
+}
+
+body.dark .score-result {
+  background: #1c1c1c;
+  border-color: #2a2a2a;
+}
+
+.score-num {
+  font-family: "Geist", sans-serif;
+  font-size: 72px;
+  font-weight: 700;
+  color: #059669;
+  line-height: 1;
+}
+
+.score-sub {
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  color: #6b7280;
+  margin: 8px 0 12px;
+}
+body.dark .score-sub {
+  color: #9ca3af;
+}
+
+.score-msg {
+  font-family: "Geist", sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1c1c1c;
+}
+body.dark .score-msg {
+  color: #d1d1d1;
+}
+
+/* Stats */
+.stats-view {
+  max-width: 600px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+}
+
+.stat-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+body.dark .stat-card {
+  background: #1c1c1c;
+  border-color: #2a2a2a;
+}
+
+.stat-num {
+  font-family: "Geist", sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: #059669;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.stat-label {
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+/* Notes */
+.notes-view {
+  max-width: 680px;
+}
+
+.notes-content {
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  line-height: 1.8;
+  color: #374151;
+  white-space: pre-wrap;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 1.5rem;
+}
+
+body.dark .notes-content {
+  color: #d1d1d1;
+  background: #1c1c1c;
+  border-color: #2a2a2a;
+}
