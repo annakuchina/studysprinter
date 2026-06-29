@@ -3,10 +3,6 @@ import { supabase } from "../supabase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookOpen } from "@fortawesome/free-solid-svg-icons";
 import "../styles/base.css";
-import "../styles/sidebar.css";
-import "../styles/forms.css";
-import "../styles/study.css";
-import "../styles/modals.css";
 import "../styles/auth.css";
 
 export default function Login() {
