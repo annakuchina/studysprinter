@@ -250,6 +250,15 @@ body.dark .user-menu-item:hover {
 }
 
 @media (max-width: 768px) {
+  .app-body {
+    position: relative;
+  }
+
+  .main-content {
+    margin-left: 48px;
+    transition: margin-left 0.25s ease;
+  }
+
   .main-nav {
     position: fixed;
     top: 0;
@@ -282,17 +291,5 @@ body.dark .user-menu-item:hover {
 
   .mobile-fab:disabled {
     opacity: 0.5;
-  }
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-  .app-body {
-    position: relative;
-  }
-
-  .main-content {
-    margin-left: 48px;
-    transition: margin-left 0.25s ease;
   }
 }

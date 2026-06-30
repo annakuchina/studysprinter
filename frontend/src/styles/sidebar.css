@@ -277,10 +277,10 @@ body.dark .sidebar-toggle-btn:hover {
 /* Mobile sidebar */
 @media (max-width: 768px) {
   .sidebar {
-    position: absolute;
-    top: 0;
+    position: fixed;
+    top: 58px;
     left: 0;
-    height: 100%;
+    height: calc(100% - 58px);
     z-index: 300;
     transform: translateX(0);
     transition:
