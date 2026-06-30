@@ -18,6 +18,7 @@ export default function Sidebar({
   onNewDeck,
   isOpen,
   onToggle,
+  isGenerating,
 }) {
   const [confirmDelete, setConfirmDelete] = useState(null);
   const [animating, setAnimating] = useState(false);
@@ -57,7 +58,7 @@ export default function Sidebar({
             <button
               className="sidebar-new-btn"
               onClick={onNewDeck}
-              style={{ visibility: isOpen ? "visible" : "hidden" }}>
+              disabled={isGenerating}>
               + New
             </button>
           )}

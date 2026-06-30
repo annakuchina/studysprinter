@@ -3,6 +3,16 @@ import { supabase } from "../supabase";
 const BACKEND_URL =
   process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
 
+export async function deleteAccount() {
+  const authHeader = await getAuthHeader();
+  const response = await fetch(`${BACKEND_URL}/account`, {
+    method: "DELETE",
+    headers: { ...authHeader },
+  });
+  if (!response.ok) throw new Error("Failed to delete account");
+  return response.json();
+}
+
 async function getAuthHeader() {
   const {
     data: { session },

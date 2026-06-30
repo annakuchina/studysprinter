@@ -131,6 +131,16 @@ body.dark .deck-name-input::placeholder {
   white-space: nowrap;
 }
 
+.btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-secondary:disabled:hover {
+  border-color: #d1d5db;
+  color: #6b7280;
+}
+
 body.dark .btn-secondary {
   background: #1c1c1c;
   border-color: #333333;
@@ -176,6 +186,7 @@ body.dark .btn-reset:hover {
 /* Create deck */
 .create-deck {
   max-width: 680px;
+  margin: 0 auto;
 }
 
 .create-deck-header {
@@ -230,4 +241,64 @@ body.dark .tag-q {
   background: rgba(30, 64, 175, 0.15);
   color: #93c5fd;
   border-color: rgba(30, 64, 175, 0.25);
+}
+
+@media (max-width: 768px) {
+  .create-deck {
+    padding: 0;
+  }
+
+  .create-deck-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .create-deck-header .btn-secondary {
+    width: auto;
+    background: none;
+    border: none;
+    padding: 4px 0;
+    font-size: 13px;
+    color: #6b7280;
+  }
+
+  .create-deck-header .btn-secondary:hover {
+    color: #374151;
+    border: none;
+  }
+
+  body.dark .create-deck-header .btn-secondary {
+    color: #9ca3af;
+  }
+
+  body.dark .create-deck-header .btn-secondary:hover {
+    color: #d1d1d1;
+  }
+
+  .card {
+    background: transparent;
+    border: none;
+    padding: 0.75rem 0;
+    border-radius: 0;
+    margin-bottom: 0.5rem;
+  }
+
+  textarea {
+    padding: 10px 12px;
+  }
+
+  .deck-name-input {
+    padding: 10px 12px;
+  }
+
+  .action-row {
+    flex-direction: column;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+  }
 }

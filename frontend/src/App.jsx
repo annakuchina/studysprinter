@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { supabase } from "./supabase";
 import Login from "./components/Login";
-import { faBookOpen } from "@fortawesome/free-solid-svg-icons";
+import { faBookOpen, faUser } from "@fortawesome/free-solid-svg-icons";
 import "./styles/base.css";
 import "./styles/sidebar.css";
 import "./styles/study.css";
@@ -12,11 +12,14 @@ import "./styles/modals.css";
 import Sidebar from "./components/Sidebar";
 import CreateDeck from "./components/CreateDeck";
 import StudyView from "./components/StudyView";
+import ResetPassword from "./components/ResetPassword";
+
 import {
   getStudySets,
   getStudySet,
   deleteStudySet,
   togglePin,
+  deleteAccount,
 } from "./api/claude";
 
 export default function App() {
@@ -27,19 +30,24 @@ export default function App() {
   const [selectedDeck, setSelectedDeck] = useState(null);
   const [view, setView] = useState("empty");
   const [loading, setLoading] = useState(true);
+  const [isGenerating, setIsGenerating] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth > 768);
   const [sidebarAnimating, setSidebarAnimating] = useState(false);
 
   const [user, setUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showDeleteAccountConfirm, setShowDeleteAccountConfirm] =
+    useState(false);
+  const [passwordRecovery, setPasswordRecovery] = useState(false);
 
   useEffect(() => {
     document.body.classList.toggle("dark", dark);
   }, [dark]);
 
   useEffect(() => {
-    fetchDecks();
-  }, []);
+    if (user) fetchDecks();
+  }, [user]);
 
   useEffect(() => {
     function handleResize() {
@@ -73,6 +81,9 @@ export default function App() {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
+      if (_event === "PASSWORD_RECOVERY") {
+        setPasswordRecovery(true);
+      }
     });
 
     return () => subscription.unsubscribe();
@@ -117,6 +128,16 @@ export default function App() {
     );
   }
 
+  async function handleDeleteAccount() {
+    try {
+      await deleteAccount();
+      await supabase.auth.signOut();
+    } catch (e) {
+      console.error(e);
+      alert("Failed to delete account. Please try again.");
+    }
+  }
+
   async function handleDeleteDeck(id) {
     await deleteStudySet(id);
     setDecks(decks.filter((d) => d.id !== id));
@@ -150,6 +171,9 @@ export default function App() {
     setView("study");
   }
 
+  if (passwordRecovery) {
+    return <ResetPassword onComplete={() => setPasswordRecovery(false)} />;
+  }
   if (authLoading) return null;
   if (!user) return <Login />;
 
@@ -176,20 +200,40 @@ export default function App() {
             }}>
             {dark ? "☀" : "◑"}
           </button>
-          <button
-            className="theme-btn"
-            onClick={() => supabase.auth.signOut()}
-            title="Sign out">
-            {user?.user_metadata?.avatar_url ? (
-              <img
-                src={user.user_metadata.avatar_url}
-                alt="avatar"
-                style={{ width: 20, height: 20, borderRadius: "50%" }}
-              />
-            ) : (
-              "↪"
+          <div style={{ position: "relative" }}>
+            <button
+              className="theme-btn"
+              onClick={() => setShowUserMenu((p) => !p)}
+              title="Account">
+              {user?.user_metadata?.avatar_url ? (
+                <img
+                  src={user.user_metadata.avatar_url}
+                  alt="avatar"
+                  style={{ width: 20, height: 20, borderRadius: "50%" }}
+                />
+              ) : (
+                <FontAwesomeIcon icon={faUser} />
+              )}
+            </button>
+            {showUserMenu && (
+              <div className="user-menu">
+                <div className="user-menu-email">{user?.email}</div>
+                <button
+                  className="user-menu-item"
+                  onClick={() => supabase.auth.signOut()}>
+                  Sign out
+                </button>
+                <button
+                  className="user-menu-item user-menu-item-danger"
+                  onClick={() => {
+                    setShowUserMenu(false);
+                    setShowDeleteAccountConfirm(true);
+                  }}>
+                  Delete account
+                </button>
+              </div>
             )}
-          </button>
+          </div>
         </div>
       </header>
 
@@ -202,6 +246,7 @@ export default function App() {
           onDelete={handleDeleteDeck}
           onPin={handlePinDeck}
           onNewDeck={() => setView("create")}
+          isGenerating={isGenerating}
           isOpen={sidebarOpen}
           onToggle={() => {
             const sidebar = document.querySelector(".sidebar");
@@ -210,6 +255,14 @@ export default function App() {
           }}
         />
         <main className="main-content">
+          {view !== "create" && (
+            <button
+              className="mobile-fab"
+              onClick={() => setView("create")}
+              disabled={isGenerating}>
+              +
+            </button>
+          )}
           {view === "empty" && (
             <div className="empty-state">
               <div className="empty-title">No deck selected</div>
@@ -228,6 +281,7 @@ export default function App() {
             <CreateDeck
               onDeckCreated={handleDeckCreated}
               onCancel={() => setView(selectedDeck ? "study" : "empty")}
+              onGeneratingChange={setIsGenerating}
             />
           )}
           {view === "study" && selectedDeck && (
@@ -238,6 +292,33 @@ export default function App() {
           )}
         </main>
       </div>
+
+      {showDeleteAccountConfirm && (
+        <div
+          className="delete-overlay"
+          onClick={() => setShowDeleteAccountConfirm(false)}>
+          <div className="delete-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="delete-modal-title">Delete your account?</div>
+            <div className="delete-modal-sub">
+              This will permanently delete your account and all your decks,
+              flashcards, quiz questions, and stats. This action cannot be
+              undone.
+            </div>
+            <div className="delete-modal-actions">
+              <button
+                className="delete-cancel-btn"
+                onClick={() => setShowDeleteAccountConfirm(false)}>
+                Cancel
+              </button>
+              <button
+                className="delete-confirm-btn"
+                onClick={handleDeleteAccount}>
+                Delete account
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

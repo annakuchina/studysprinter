@@ -24,7 +24,11 @@ Different inputs use different variables so O(a + b) not O(n + n).
 
 Space complexity follows the same notation but measures memory usage instead of time.`;
 
-export default function CreateDeck({ onDeckCreated, onCancel }) {
+export default function CreateDeck({
+  onDeckCreated,
+  onCancel,
+  onGeneratingChange,
+}) {
   const [title, setTitle] = useState("");
   const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(false);
@@ -43,6 +47,7 @@ export default function CreateDeck({ onDeckCreated, onCancel }) {
     }
     setError("");
     setLoading(true);
+    if (onGeneratingChange) onGeneratingChange(true);
     try {
       const result = await generateStudySet(notes, title.trim());
       onDeckCreated({ ...result, notes });
@@ -54,6 +59,7 @@ export default function CreateDeck({ onDeckCreated, onCancel }) {
       }
     } finally {
       setLoading(false);
+      if (onGeneratingChange) onGeneratingChange(false);
     }
   }
 
@@ -110,9 +116,11 @@ export default function CreateDeck({ onDeckCreated, onCancel }) {
           <button
             className="btn-secondary"
             onClick={() => {
+              setTitle("Big O Notation");
               setNotes(EXAMPLE_NOTES);
               setError("");
-            }}>
+            }}
+            disabled={loading}>
             Try an example
           </button>
         </div>

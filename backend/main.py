@@ -240,3 +240,13 @@ def get_stats(study_set_id: str, authorization: Optional[str] = Header(None)):
         "last_reviewed": data[0]["reviewed_at"],
         "total_cards_revealed": sum(d["cards_reviewed"] for d in data)
     }
+
+@app.delete("/account")
+def delete_account(authorization: Optional[str] = Header(None)):
+    user_id = get_user_id(authorization)
+
+    # Deleting the auth user automatically cascades to delete all their study_sets,
+    # which in turn cascades to flashcards/quiz_questions/deck_stats via study_set_id
+    supabase.auth.admin.delete_user(user_id)
+
+    return {"status": "account deleted"}

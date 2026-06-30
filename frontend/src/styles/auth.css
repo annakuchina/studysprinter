@@ -82,6 +82,95 @@ body.dark .login-title {
   border-color: #9ca3af;
 }
 
+.login-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 1.25rem 0;
+  color: #9ca3af;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+}
+
+.login-divider::before,
+.login-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #e5e7eb;
+}
+
+body.dark .login-divider::before,
+body.dark .login-divider::after {
+  background: #2a2a2a;
+}
+
+.login-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  color: #374151;
+  background: white;
+  outline: none;
+  transition: border-color 0.2s;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.login-input:focus {
+  border-color: #059669;
+}
+
+body.dark .login-input {
+  background: #2a2a2a;
+  border-color: #333333;
+  color: #d1d1d1;
+}
+
+body.dark .login-input::placeholder {
+  color: #6b7280;
+}
+
+.login-error {
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  color: #dc2626;
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+.login-message {
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  color: #059669;
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+.login-switch {
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  color: #6b7280;
+  margin-top: 1rem;
+}
+
+.login-switch button {
+  background: none;
+  border: none;
+  color: #059669;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 0;
+}
+
+body.dark .login-switch {
+  color: #9ca3af;
+}
+
 body.dark .login-google-btn {
   background: #2a2a2a;
   border-color: #333333;
