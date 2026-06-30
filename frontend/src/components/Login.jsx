@@ -74,6 +74,11 @@ export default function Login() {
               "Incorrect email or password. If you signed up with Google, try that instead.",
             );
           }
+          if (error.message.includes("Email not confirmed")) {
+            throw new Error(
+              "Please confirm your email first. Check your inbox for the confirmation link.",
+            );
+          }
           throw error;
         }
       }
