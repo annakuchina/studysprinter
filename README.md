@@ -10,7 +10,7 @@ StudySprinter is a full-stack AI study app. Paste in your notes, and it generate
 
 - AI-generated flashcards, quizzes, and summaries from pasted notes (OpenAI GPT-4)
 - Google and email/password authentication, with password reset and account deletion
-- Private, per-user data — your decks are only visible to you
+- Private, per-user data: your decks are only visible to you
 - Quiz scoring with shuffled question and answer order on every attempt
 - Per-deck stats: quizzes taken, best score, last studied
 - Pin decks, dark mode, fully responsive on mobile

@@ -153,7 +153,9 @@ function DeckItem({ deck, selectedId, onSelect, onDelete, onPin }) {
       className={`sidebar-item ${selectedId === deck.id ? "active" : ""}`}
       onClick={() => onSelect(deck.id)}>
       <div className="sidebar-item-content">
-        <div className="sidebar-item-title">{deck.title}</div>
+        <div className="sidebar-item-title" title={deck.title}>
+          {deck.title}
+        </div>
         <div className="sidebar-item-date">
           {deck.last_studied
             ? `Last studied ${new Date(deck.last_studied).toLocaleDateString("en-AU", { day: "numeric", month: "short", year: "numeric" })}`

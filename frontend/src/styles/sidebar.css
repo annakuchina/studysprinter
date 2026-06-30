@@ -292,4 +292,10 @@ body.dark .sidebar-toggle-btn:hover {
     width: 48px;
     transform: translateX(0);
   }
+
+  .sidebar-item-actions {
+    opacity: 1;
+    width: auto;
+    overflow: visible;
+  }
 }
