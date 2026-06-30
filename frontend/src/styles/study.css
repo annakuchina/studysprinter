@@ -259,7 +259,7 @@ body.dark .q-text {
 body.dark .opt {
   background: #1c1c1c;
   border-color: #333333;
-  color: #9ca3af;
+  color: #d1d1d1;
 }
 
 .opt:hover:not(.disabled):not(.correct):not(.wrong) {
