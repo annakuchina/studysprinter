@@ -264,6 +264,10 @@ body.dark .tag-q {
     color: #6b7280;
   }
 
+  body.dark .btn-secondary {
+    background: none;
+  }
+
   .create-deck-header .btn-secondary:hover {
     color: #374151;
     border: none;
