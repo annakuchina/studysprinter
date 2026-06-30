@@ -281,6 +281,7 @@ body.dark .sidebar-toggle-btn:hover {
     top: 58px;
     left: 0;
     height: calc(100% - 58px);
+    height: calc(100dvh - 58px);
     z-index: 300;
     transform: translateX(0);
     transition:
