@@ -8,7 +8,7 @@
 }
 
 body.dark .card {
-  background: #1c1c1c;
+  background: transparent;
   border-color: #2a2a2a;
 }
 
@@ -280,7 +280,7 @@ body.dark .tag-q {
   .card {
     background: transparent;
     border: none;
-    padding: 0.75rem 0;
+    padding: 1.5rem 0;
     border-radius: 0;
     margin-bottom: 0.5rem;
   }
