@@ -203,10 +203,21 @@ body.dark .user-menu-email {
   transition: background 0.15s;
 }
 
+.user-menu-item:hover {
+  background: #f3f4f6;
+}
+
+body.dark .user-menu-item {
+  color: #d1d1d1;
+}
+
+body.dark .user-menu-item:hover {
+  background: #2a2a2a;
+}
+
 .user-menu-item-danger {
   color: #dc2626;
   font-size: 11px;
-  opacity: 0.6;
   transition: opacity 0.15s;
 }
 
@@ -220,16 +231,8 @@ body.dark .user-menu-item-danger:hover {
   background: rgba(220, 38, 38, 0.1);
 }
 
-.user-menu-item:hover {
-  background: #f3f4f6;
-}
-
-body.dark .user-menu-item {
-  color: #d1d1d1;
-}
-
-body.dark .user-menu-item:hover {
-  background: #2a2a2a;
+body.dark .user-menu-item-danger {
+  color: #dc2626;
 }
 
 @keyframes spin {
