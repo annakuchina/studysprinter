@@ -203,7 +203,8 @@ export default function App() {
                 localStorage.setItem("theme", !d ? "dark" : "light");
                 return !d;
               });
-            }}>
+            }}
+            aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}>
             <FontAwesomeIcon icon={dark ? faSun : faMoon} />
           </button>
           <div style={{ position: "relative" }}>
