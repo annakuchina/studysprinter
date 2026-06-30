@@ -250,6 +250,17 @@ body.dark .user-menu-item:hover {
 }
 
 @media (max-width: 768px) {
+  .main-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .app-body {
+    margin-top: 58px;
+  }
+
   .mobile-fab {
     display: flex;
     position: fixed;
