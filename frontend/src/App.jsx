@@ -2,7 +2,13 @@ import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { supabase } from "./supabase";
 import Login from "./components/Login";
-import { faBookOpen, faUser } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBookOpen,
+  faUser,
+  faPlus,
+  faSun,
+  faMoon,
+} from "@fortawesome/free-solid-svg-icons";
 import "./styles/base.css";
 import "./styles/sidebar.css";
 import "./styles/study.css";
@@ -198,7 +204,7 @@ export default function App() {
                 return !d;
               });
             }}>
-            {dark ? "☀" : "☾"}
+            <FontAwesomeIcon icon={dark ? faSun : faMoon} />
           </button>
           <div style={{ position: "relative" }}>
             <button
@@ -260,7 +266,7 @@ export default function App() {
               className="mobile-fab"
               onClick={() => setView("create")}
               disabled={isGenerating}>
-              +
+              <FontAwesomeIcon icon={faPlus} />
             </button>
           )}
           {view === "empty" && (
