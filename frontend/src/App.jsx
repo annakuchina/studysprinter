@@ -198,7 +198,7 @@ export default function App() {
                 return !d;
               });
             }}>
-            {dark ? "☀" : "◑"}
+            {dark ? "☀" : "☾"}
           </button>
           <div style={{ position: "relative" }}>
             <button
