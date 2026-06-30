@@ -15,6 +15,8 @@
   color: #1c1c1c;
   letter-spacing: -0.3px;
   margin-bottom: 6px;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 body.dark .study-view-title {
@@ -395,6 +397,8 @@ body.dark .stat-card {
   border: 1px solid #e5e7eb;
   border-radius: 14px;
   padding: 1.5rem;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 body.dark .notes-content {
